@@ -1,0 +1,76 @@
+# SIMPLY APPLICATION FOR COMPARING ECONOMIC INDICATORS AND LINEAR AND NON LINEAR MODELS
+# BELOW SOME USEFUL PACKAGES
+
+
+library(shiny)
+library(tidyverse) #
+library(dplyr) #
+library(tidyr) #
+library(shinythemes)
+library(ggplot2) #
+library(ggthemes)
+
+library(grid)
+library(gridExtra)
+library(GGally)
+library(KernSmooth)
+library(car)
+library(MASS)
+library(caret)
+library(downloader)
+library(data.table)
+
+library(WDI)  # FOR DATA - WORLD BANK
+
+WDI1<-WDI(
+  country = "all",
+  indicator =  c( "NY.ADJ.ICTR.GN.ZS", "NY.GDP.MKTP.CD", "NY.GDP.MKTP.KD.ZG", "NY.GDP.PCAP.CD", "FP.CPI.TOTL.ZG",   
+                  "GC.XPN.INTP.RV.ZS", "FM.AST.DOMS.CN", "FI.RES.TOTL.CD", "NE.TRD.GNFS.ZS", "SL.UEM.TOTL.NE.ZS"),
+  start = 1960,
+  end = 2020,
+  extra = FALSE,
+  cache = NULL
+)
+
+WDIData1 <-WDI1 %>% filter (country %in% c ("Albania" , "Andorra", "Angola", "Argentina", "Armenia", "Aruba",                         
+                                            "Australia", "Austria", "Azerbaijan", "Bahamas, The", "Bahrain",
+                                            "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Bermuda", 
+                                            "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Bulgaria",                      
+                                            "Burkina Faso","Cabo Verde", "Cambodia", "Cameroon", "Canada", "Cayman Islands",
+                                            "Chile", "China" , "Colombia", "Congo, Dem. Rep.", "Congo, Rep." , "Costa Rica",
+                                            "Croatia", "Cuba", "Curacao", "Cyprus", "Czech Republic","Denmark", "Dominica",                      
+                                            "Dominican Republic", "Ecuador", "Egypt, Arab Rep.", "El Salvador", "Estonia",                                
+                                            "Ethiopia", "Fiji", "Finland" , "France", "Gabon", "Georgia", "Germany", "Ghana",                                             
+                                            "Greece", "Guatemala", "Honduras", "Hong Kong SAR, China", "Hungary",  "Iceland",
+                                            "India", "Indonesia", "Iran, Islamic Rep.", "Iraq", "Ireland", "Isle of Man",
+                                            "Israel", "Italy", "Jamaica", "Japan" ,"Jordan", "Kazakhstan", "Kenya",                         
+                                            "Korea, Rep.", "Kuwait", "Kyrgyz Republic", "Latvia", "Lebanon",  "Liechtenstein",
+                                            "Lithuania", "Luxembourg", "Macao SAR, China", "Malaysia", "Malta", "Mauritius",
+                                            "Mexico", "Moldova", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Namibia",
+                                            "Netherlands", "New Zealand", "Nicaragua", "Nigeria", "Norway", "Oman", "Pakistan",                      
+                                            "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",                      
+                                            "Qatar", "Romania", "Russian Federation", "Rwanda", "Saudi Arabia", "Senegal", "Serbia",
+                                            "Singapore", "Slovak Republic", "Slovenia", "South Africa", "Spain", "Sri Lanka", 
+                                            "St. Vincent and the Grenadines", "Sudan", "Suriname", "Sweden", "Switzerland", "Tajikistan", "Tanzania",                      
+                                            "Thailand", "Trinidad and Tobago", "Tunisia", "Turkey", "Turks and Caicos Islands", "Uganda",
+                                            "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay" ,                      
+                                            "Venezuela, RB", "Vietnam", "Zambia", "Zimbabwe"))
+
+# write.csv(WDIData1, file="WDIData1.csv", sep = ";", dec = ".",append = T)
+
+(WDIData1$iso2c <- NULL)
+
+colnames(WDIData1)[1:12]<- c("Country", "year","Adjusted savings: gross savings (% of GNI)","GDP (current US$)","GDP growth (annual %)",
+                             "GDP per capita (current US$)", "Inflation, consumer prices (annual %)","Interest payments (% of revenue)",
+                             "Net domestic credit (current LCU)","Total reserves (includes gold, current US$)", "Trade (% of GDP)",
+                             "Unemployment, total (% of total labor force) (national estimate)")
+
+#write.csv(WDIData1, file="ind.csv", sep = ";", dec = ".",append = T)
+#ind<-read.csv("C:\\Dublin Business School\\Advanced Data Analytics\\1.0 CA\\New folder (2)\\ind.csv")
+
+ind<-WDIData1
+
+
+
+
+
