@@ -1,0 +1,64 @@
+# app working with the newest r version as wel as tidy verselibrary (4.0)
+kraje <- unique(ind$Country)
+
+fig.width <- 950
+fig.height <- 650
+
+shinyUI(fluidPage(
+  tags$head(tags$style(HTML("
+                            .well {
+                            background-color: #4444FF!important;
+                            width: 280px;
+                            }
+                            "))),
+  titlePanel(strong("Relations of the economic indicators by country (1960-2020)")),
+  sidebarLayout(
+    sidebarPanel(
+      div(selectInput(inputId = "selected_country", 
+                      label = "Select country to analysis",
+                      choices = kraje,
+                      selected = "Poland"),
+          selectInput(inputId = "x", 
+                      label = "Select first indicator (dependent variable)",
+                      choices =   list("GDP.per.capita..current.US.."='a', "GDP (current US$)"='b',"GDP growth (annual %)"='c',"Total reserves (includes gold, current US$)"='d',
+                                       "Inflation, consumer prices (annual %)"='e',"Unemployment, total (% of total labor force) (national estimate)"='f',
+                                       "Trade (% of GDP)"='g',"Interest payments (% of revenue)"='h',"Adjusted savings: gross savings (% of GNI)"='i',
+                                       "Net domestic credit (current LCU)"='j'),
+                      selected = '',
+                      multiple = F),
+          selectInput(inputId = "y", 
+                      label = "Select second indicator (independent variable)",
+                      choices =   list("GDP.per.capita..current.US.."='k', "GDP (current US$)"='l',"GDP growth (annual %)"='m',"Total reserves (includes gold, current US$)"='n',
+                                       "Inflation, consumer prices (annual %)"='o',"Unemployment, total (% of total labor force) (national estimate)"='p',
+                                       "Trade (% of GDP)"='r',"Interest payments (% of revenue)"='s',"Adjusted savings: gross savings (% of GNI)"='t',
+                                       "Net domestic credit (current LCU)"='u'),
+                      selected = '',
+                      multiple = F),
+          checkboxInput(inputId = "liniaTrendu",
+                        label = "Do you want to see the trend lines?",
+                        value = TRUE)
+      )),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Plot ", 
+                 p("Comparison of simply linear and nonlinear regresion"),
+                 div(plotOutput("myplot",width=fig.width, height=fig.height))),
+        tabPanel("LM residuals", 
+                 p("Distribution of residuals for LM comprared with normal distribution"),
+                 div(plotOutput("myplot2",width=fig.width, height=fig.height))),
+        tabPanel("Hist", 
+                 p("Hipothesis testing. Is H0= 0 significantly, Assumed that p-value over .0 showing random results"),
+                 div(plotOutput("myplot3",width=fig.width, height=fig.height))),
+        tabPanel("Model",
+                 p("Results of the linear model of indicators for the country"),
+                 div(verbatimTextOutput("model"))),
+        tabPanel("Density",
+                 p("Density function of two choosen variables:" ),
+                 div(plotOutput("density")),
+                 div(plotOutput("density2"))
+        )
+      )    
+    )
+  )
+))
