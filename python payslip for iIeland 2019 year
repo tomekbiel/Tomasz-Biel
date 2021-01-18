@@ -1,0 +1,80 @@
+l = ['Name:', 'Employee Number:', 'Week Ending Date:( DD/MM/YYY)', 'Hours Worked:', 'Rate per Hour:', 'Standard Tax Rate ',
+     'Overtime Tax Rate:']
+
+print(l[0], end='  ')              # using  the list l [] etc.
+x0 = str(input())
+x0 = x0.title()
+print(l[1], end='  ')
+x1 = int(input())
+print(l[2], end='  ')
+x2 = str(input())
+x2 = x2[:2] + '/' + x2[3:5] + '/' + x2[6:10]
+print(l[3], end='  ')
+x3 = float(input())
+print(l[4], end='  ')
+x4 = float(input())
+print(l[5], end='  ')
+x5 = float(input())
+print(l[6], end='  ')
+x6 = float(input())
+
+
+h = 39                                          #h = 39 -> assumption
+if x3 > h:          # I calculate using function if/else - it is the simply way and good enough in this exercise
+    x31 = h
+    x32 = x3 - h
+else:
+    x31 = x3
+    x32 = 0
+
+while x5 > 1.0 and x6 > 1.0:  # using while function with conditions and
+    x5 *= 0.01  # depend how we put % as whole or not ( 20 % or 0.20)
+    x6 *= 0.01
+
+v1 = x31 * x4   # from here I start calculations ALL THEM ARE EXACTLY SAME AS IN IRELAND
+v2 = x32 * x4 * 1.5
+v3 = v1 + v2
+
+if v3 > 678.85:
+    t1 = (v3 - 678.85) * x6 + (678.85 * x5)
+else:
+    t1 = v3 * x5
+if t1 > 68.35:
+    t1 -= 68.35
+else:
+    t1 = 0
+if v3 <= 352:
+    t2 = 0
+else:
+    t2 = v3 * 0.04
+
+if v3 <= 231:
+    t3 = 0.005
+elif v3 > 231 and v3 <= 393.92:
+    t3 = (231*0.005) + (v3 - 231)*0.015
+elif v3 > 366.2 and v3 <= 1352.2:
+    t3 = (231*0.005) + (v3 - 231)*0.025 + (v3 - 366.2)*0.0375
+else:
+    t3 = (231*0.005) + (v3 - 231)*0.025 + (v3 - 366.2)*0.0375 + (v3 - 1347) * 0.08
+t4 = t1 + t2 + t3
+v4 = v3 - t4
+''' BELOW I CREATE THE TABLE '''
+#######AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+szer = 81                     # variable szer next line multiply by space  to get empty space ps this time i used diferent name for variable but in this short programme i do not have to do this
+print(' ' * szer)
+print("                                 P A Y S L I P                                    ")
+print('.' * szer)
+print(x2, '                                                                                ')
+print(l[0],'               ', x0)
+print(l[1],'   ',x1)
+print("| {:30s} | {:20s} || {:20s}|" .format( "PAY DETAILS", "DEDUCTION DETAILS", "SUMMARY"))            # new python is easy because is normal to keep the letters close to left
+print("|{:16s}|{:7s}|{:7s}|{:10s}|{:10s}||{:20s} |" .format("DESCRIPTION", "HOURS","VALUE", "DESCRIPTION", "VALUE", "GROSS PAY")) #  .format or #... in the next line print the way i need; shorts f s- str int  f - float with  2 to round to two places after .
+print("|%-16s|%7.2f|%7.2f|%-10s|%10.2f ||%20.2f |" % ("NORMAL", x31, v1,"P.A.Y.E.", t1,v3))         # old python is keeping to right  this time it is easieer (of courde i could ues it before just to add the '-'sign
+print("|%-16s|%7.2f|%7.2f|%-10s|%10.2f ||%-20s |" % ("OVERTIMES", x32, v2,"P.R.S.I", t2,"TOTAL DEDUCTION"))
+print("|%-16s|%7s|%7s|%-10s|%10.2f ||%20.2f |" % ("", "", "","USC", t3,t4))
+print('.' * szer)
+print("|%-16s %7s %7s %-10s %10s ||%20s |" % ("", "", "","", "","NET PAY"))
+print("|%16s %7s %7s %10s %10s ||%20.2f |" % ("", "", "", "", "", v4))
+print('.' * szer)
+
+# written by Tomasz Biel
